@@ -30,7 +30,7 @@ pipeline {
                 }
 
                 // Deploy Docker container on port 8082
-                    sh 'docker run -d -p 8083:80 rochak11/jenkins:${BUILD_NUMBER}'
+                    sh 'docker run -d -p 8083:80 rochak11/krishna:${BUILD_NUMBER}'
 
             }
         }
