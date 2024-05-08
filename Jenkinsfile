@@ -20,8 +20,17 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                // Deploy Docker container
-                sh 'docker run -d -p 8080:80 webapp'
+                // Tag Docker image
+                sh 'docker tag webapp rochak11/krishna:${BUILD_NUMBER}'
+
+                // Push Docker image to Docker Hub
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+                    sh 'docker push rochak11/krishna:${BUILD_NUMBER}'
+                }
+
+                // Deploy Docker container on port 8082
+                    sh 'docker run -d -p 8083:80 rochak11/jenkins:${BUILD_NUMBER}'
             }
         }
     }
